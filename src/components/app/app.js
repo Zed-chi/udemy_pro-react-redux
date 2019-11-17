@@ -13,7 +13,10 @@ class App extends React.Component{
         this.state = {
             todoData:[
                 this.createItem("first"),
-            ]
+                this.createItem("second"),
+                this.createItem("third"),
+            ],
+            filter:""
         }
         
 
@@ -71,6 +74,23 @@ class App extends React.Component{
         });
     };
     
+    filterItems = (criteria="")=>{
+        console.log(criteria);
+        this.setState({
+            filter:criteria
+        });
+    };
+
+    getFilteredItems = ()=>{
+        switch(this.state.filter){
+            case "active":
+                return this.state.todoData.filter(e=>e.done===false);
+            case "done":
+                return this.state.todoData.filter(e=>e.done);
+            default:
+                return this.state.todoData; 
+        }
+    };
     render(){
         const {todoData} = this.state;
         const doneCount = todoData.filter(e=>e.done===true).length;
@@ -82,14 +102,15 @@ class App extends React.Component{
                 </div>
                 <div className="row d-flex justify-content-center">
                     <SearchPanel />
-                    <TodoItemFilter/>
+                    <TodoItemFilter onFilterClick={this.filterItems}/>
                 </div>
                 <div className="row d-flex justify-content-center">
-                    <TodoList todos={todoData} onDeleted={this.deleteItem} onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone}/>
+                    <TodoList todos={this.getFilteredItems()} onDeleted={this.deleteItem} onToggleImportant={this.onToggleImportant} onToggleDone={this.onToggleDone}/>
                 </div>
                 <div className="row d-flex justify-content-center">
                     <ItemAddForm className="col-md-6" onItemAdd={this.addItem}/>
-                </div>                      
+                </div>
+                          
             </div>);
     }
 }
