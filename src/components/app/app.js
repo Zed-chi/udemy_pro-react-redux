@@ -16,7 +16,8 @@ class App extends React.Component{
                 this.createItem("second"),
                 this.createItem("third"),
             ],
-            filter:""
+            filter:"",
+            search:""
         }
         
 
@@ -87,10 +88,26 @@ class App extends React.Component{
                 return this.state.todoData.filter(e=>e.done===false);
             case "done":
                 return this.state.todoData.filter(e=>e.done);
+            case "search":
+                return this.getItemsBySearch();
             default:
                 return this.state.todoData; 
         }
     };
+
+    getItemsBySearch = ()=>{
+        const reg = new RegExp(this.state.search);
+        return this.state.todoData.filter(e=>{
+            return reg.test(e.label);
+        });
+    }
+    searchBy=(text)=>{
+        this.setState({
+            search:text,
+            filter:"search"
+        });
+        
+    }
     render(){
         const {todoData} = this.state;
         const doneCount = todoData.filter(e=>e.done===true).length;
@@ -101,7 +118,7 @@ class App extends React.Component{
                     <AppHeader className="col-md-6" todo={todoCount} done={doneCount} />
                 </div>
                 <div className="row d-flex justify-content-center">
-                    <SearchPanel />
+                    <SearchPanel onChange={this.searchBy} value={this.state.search}/>
                     <TodoItemFilter onFilterClick={this.filterItems}/>
                 </div>
                 <div className="row d-flex justify-content-center">
