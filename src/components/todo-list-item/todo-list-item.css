@@ -1,0 +1,19 @@
+.done{
+    text-decoration:line-through
+}
+.important{
+    font-weight: bold;
+}
+li{
+    width:auto;
+}
+.label{
+
+    min-width: 80%;
+}
+.buttons{
+    width: 20%;
+}
+.buttons button{
+    width:100%;
+}
